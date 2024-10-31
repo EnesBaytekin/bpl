@@ -34,3 +34,9 @@ b = 0
 for i in [0, 1, 2, 3] {
     b += i
 }
+
+c = 0
+while c < some_function(b, 5) {
+    c += 1
+}
+

@@ -10,6 +10,7 @@ statement
   | function_definition
   | if_statement
   | for_loop
+  | while_loop
 
 statements
   :
@@ -110,3 +111,6 @@ for_loop
 iterable
   : STR
   | list
+
+while_loop
+  : WHILE expression { statements }
