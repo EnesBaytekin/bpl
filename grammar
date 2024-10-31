@@ -6,7 +6,7 @@ statement
   : { statements }
   | expression
   | assignment
-  | del VAR [ expression ]
+  | DEL VAR [ expression ]
   | function_definition
   | if_statement
   | for_loop
