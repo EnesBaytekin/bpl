@@ -2,6 +2,8 @@
 
 from sys import argv
 from tokenizer import tokenize
+from parser import Parser
+
 def show_help():
     print(
 """Usage:
@@ -19,10 +21,11 @@ def main():
         print("File could not be found.") 
         exit(0)
     tokens = tokenize(data)
-    for token in tokens:
-        print(token, end=" ")
-        if token.type == "ENDL":
-            print()
+    parser = Parser(tokens)
+    parse_tree = parser.parse()
+    tree_string = parse_tree.get_tree()
+    from json import loads, dumps
+    print(dumps(tree_string, indent=2))
     
 if __name__ == "__main__":
     main()
