@@ -84,7 +84,7 @@ def tokenize(source: str):
             if c.isalnum() or c == "_":
                 value += c
             else:
-                if value in ["if", "else", "len", "del", "print", "put_pixel", "clear_pixel"]:
+                if value in ["if", "elif", "else", "del", "func"]:
                     tokens.append(Token(value.upper()))
                 else:
                     tokens.append(Token("VAR", value))
