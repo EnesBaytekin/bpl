@@ -19,3 +19,10 @@ if a == 6 {
 
 put_pixel(4, 5)
 clear_pixel(4, 5)
+
+func some_function(a, b) {
+    print("total")
+    return a+b
+}
+
+a = some_function(a+7, 22/7)
