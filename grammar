@@ -1,0 +1,88 @@
+
+program
+  : statements
+
+statement
+  : expression
+  | VAR = expression
+  | VAR [ expression ] = expression
+  | del VAR [ expression ]
+  | { statements }
+  | function_definition
+  | if_statement
+
+statements
+  :
+  | statement
+  | statement ENDL statements
+  | ENDL statements
+
+expression
+  : term expression_
+
+expression_
+  :
+  | + term expression_
+  | - term expression_
+
+term
+  : factor term_
+
+term_
+  :
+  | * factor term_
+  | / factor term_
+
+factor
+  : ( expression )
+  | value
+
+value
+  : STR
+  | INT
+  | FLOAT
+  | list
+  | function_call
+
+list
+  : [ items ]
+
+items
+  :
+  | expression items_
+
+items_
+  :
+  | , expression items_
+
+function_definition
+  : FUNC VAR ( params ) { statements }
+
+params
+  :
+  | VAR params_
+
+params_
+  :
+  | , VAR params_
+
+function_call
+  : VAR ( items )
+
+if_statement
+  : IF condition { statements } elif_statement
+
+elif_statement
+  :
+  | ELIF condition { statements } elif_statement
+  | else_statement
+
+else_statement
+  : ELSE { statements }
+
+condition
+  : expression
+  | expression = = expression
+  | expression ! = expression
+  | expression < = expression
+  | expression > = expression
