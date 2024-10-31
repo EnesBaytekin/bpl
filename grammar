@@ -18,12 +18,24 @@ statements
   | ENDL statements
 
 expression
-  : term expression_
+  : addition expression_
 
 expression_
   :
-  | + term expression_
-  | - term expression_
+  | = = addition
+  | ! = addition
+  | < = addition
+  | < addition
+  | > = addition
+  | > addition
+
+addition
+  : term addition_
+
+addition_
+  :
+  | + term addition_
+  | - term addition_
 
 term
   : factor term_
@@ -70,19 +82,13 @@ function_call
   : VAR ( items )
 
 if_statement
-  : IF condition { statements } elif_statement
+  : IF expression statement elif_statement
 
 elif_statement
   :
-  | ELIF condition { statements } elif_statement
+  | ELIF expression statement elif_statement
   | else_statement
 
 else_statement
-  : ELSE { statements }
+  : ELSE statement
 
-condition
-  : expression
-  | expression = = expression
-  | expression ! = expression
-  | expression < = expression
-  | expression > = expression
