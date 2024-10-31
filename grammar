@@ -3,19 +3,30 @@ program
   : statements
 
 statement
-  : expression
-  | VAR = expression
-  | VAR [ expression ] = expression
+  : { statements }
+  | expression
+  | assignment
   | del VAR [ expression ]
-  | { statements }
   | function_definition
   | if_statement
+  | for_loop
 
 statements
   :
   | statement
   | statement ENDL statements
   | ENDL statements
+
+assignment
+  : left_side = expression
+  | left_side += expression
+  | left_side -= expression
+  | left_side *= expression
+  | left_side /= expression
+
+left_side
+  : VAR
+  | VAR [ expression ]
 
 expression
   : addition expression_
@@ -55,6 +66,7 @@ value
   | FLOAT
   | list
   | function_call
+  | VAR [ expression ]
 
 list
   : [ items ]
@@ -82,13 +94,19 @@ function_call
   : VAR ( items )
 
 if_statement
-  : IF expression statement elif_statement
+  : IF expression { statements } elif_statement
 
 elif_statement
   :
-  | ELIF expression statement elif_statement
+  | ELIF expression { statements } elif_statement
   | else_statement
 
 else_statement
-  : ELSE statement
+  : ELSE { statements }
 
+for_loop
+  : FOR VAR IN iterable { statements }
+
+iterable
+  : STR
+  | list

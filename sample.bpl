@@ -26,3 +26,11 @@ func some_function(a, b) {
 }
 
 a = some_function(a+7, 22/7)
+
+for i in "hello":
+    print(i)
+
+b = 0
+for i in [0, 1, 2, 3] {
+    b += i
+}
