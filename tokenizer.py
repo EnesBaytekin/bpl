@@ -11,7 +11,7 @@ class Token:
         else:
             return f"<{type} '{self.value}'>"
 
-def tokenize(source: str, space_tab_length=4):
+def tokenize(source: str):
     tokens = []
     state = "idle"
     value = ""
@@ -25,13 +25,15 @@ def tokenize(source: str, space_tab_length=4):
             elif c.isdigit() or c == "-":
                 value = c
                 state = "number"
-            elif c.isalnum() or c == "_":
+            elif c.isalpha() or c == "_":
                 value = c
                 state = "word"
-            elif c in list("[](){}=+-/*,<>"):
+            elif c in list("[](){}=+-/*,<>!"):
                 tokens.append(Token(c))
             elif c == "\n":
                 tokens.append(Token("ENDL"))
+            elif c == "#":
+                state = "comment"
         elif state == "string":
             if c == value[0]:
                 state = "idle"
@@ -86,6 +88,10 @@ def tokenize(source: str, space_tab_length=4):
                     tokens.append(Token(value.upper()))
                 else:
                     tokens.append(Token("VAR", value))
+                state = "idle"
+                index -= 1
+        elif state == "comment":
+            if c == "\n":
                 state = "idle"
                 index -= 1
         index += 1
