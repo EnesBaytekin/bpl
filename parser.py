@@ -126,7 +126,20 @@ class Parser:
                         return Node("assignment", left_side, expression)
         self.index = checkpoint
     def parse_function_definition(self):
-        return Node("function_definition")
+        checkpoint = self.index
+        if self.match("FUNC") is not None:
+            VAR = self.match("VAR")
+            if VAR is not None:
+                if self.match("(") is not None:
+                    params = self.parse_params()
+                    if params is not None:
+                        if self.match(")") is not None:
+                            if self.match("{") is not None:
+                                statements = self.parse_statements()
+                                if statements is not None:
+                                    if self.match("}") is not None:
+                                        return Node("function_definition", VAR, params, statements)
+        self.index = checkpoint
     def parse_if_statement(self):
         return Node("if_statement")
     def parse_for_loop(self):
