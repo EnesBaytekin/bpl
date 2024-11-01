@@ -89,7 +89,7 @@ class Parser:
         if addition is not None:
             expression_ = self.parse_expression_()
             if expression_ is not None:
-                return Node("addition", addition, expression_)
+                return Node("expression", addition, expression_)
         self.index = checkpoint
     def parse_assignment(self):
         checkpoint = self.index
