@@ -39,26 +39,30 @@ class Parser:
         statement = self.parse_statement()
         if statement is not None:
             checkpoint2 = self.index
-            if self.match("ENDL") is not None:
+            ENDL = self.match("ENDL")
+            if ENDL is not None:
                 statements = self.parse_statements()
                 if statements is not None:
-                    return Node("statements", statement, statements)
+                    return Node("statements", statement, ENDL, statements)
             self.index = checkpoint2
             return Node("statements", statement)
         self.index = checkpoint
-        if self.match("ENDL") is not None:
+        ENDL = self.match("ENDL")
+        if ENDL is not None:
             statements = self.parse_statements()
             if statements is not None:
-                return Node("statements", statements)
+                return Node("statements", ENDL, statements)
         self.index = checkpoint
         return Node("statements")
     def parse_statement(self):
         checkpoint = self.index
-        if self.match("{") is not None:
+        OP_CURLY = self.match("{")
+        if OP_CURLY is not None:
             statements = self.parse_statements()
             if statements is not None:
-                if self.match("}") is not None:
-                    return Node("statement", statements)
+                CL_CURLY = self.match("}")
+                if CL_CURLY is not None:
+                    return Node("statement", OP_CURLY, statements, CL_CURLY)
         self.index = checkpoint
         assignment = self.parse_assignment()
         if assignment is not None:
@@ -68,23 +72,27 @@ class Parser:
         if expression is not None:
             return Node("statement", expression)
         self.index = checkpoint
-        if self.match("DEL") is not None:
+        DEL = self.match("DEL")
+        if DEL is not None:
             VAR = self.match("VAR")
             if VAR is not None:
-                if self.match("[") is not None:
+                OP_SQUARE = self.match("[")
+                if OP_SQUARE is not None:
                     expression = self.parse_expression()
                     if expression is not None:
-                        if self.match("]") is not None:
-                            return Node("statement", VAR, expression)
+                        CL_SQUARE = self.match("]")
+                        if CL_SQUARE is not None:
+                            return Node("statement", DEL, VAR, OP_SQUARE, expression, CL_SQUARE)
         self.index = checkpoint
         function_definition = self.parse_function_definition()
         if function_definition is not None:
             return Node("statement", function_definition)
         self.index = checkpoint
-        if self.match("RETURN") is not None:
+        RETURN = self.match("RETURN")
+        if RETURN is not None:
             expression = self.parse_expression()
             if expression is not None:
-                return Node("statement", expression)        
+                return Node("statement", RETURN, expression)
         self.index = checkpoint
         if_statement = self.parse_if_statement()
         if if_statement is not None:
@@ -111,76 +119,95 @@ class Parser:
         left_side = self.parse_left_side()
         if left_side is not None:
             checkpoint2 = self.index
-            if self.match("=") is not None:
+            EQ = self.match("=")
+            if EQ is not None:
                 expression = self.parse_expression()
                 if expression is not None:
-                    return Node("assignment", left_side, expression)
+                    return Node("assignment", left_side, EQ, expression)
             self.index = checkpoint2
-            if self.match("+") is not None:
-                if self.match("=") is not None:
+            PLUS = self.match("+")
+            if PLUS is not None:
+                EQ = self.match("=")
+                if EQ is not None:
                     expression = self.parse_expression()
                     if expression is not None:
-                        return Node("assignment", left_side, expression)
+                        return Node("assignment", left_side, PLUS, EQ, expression)
             self.index = checkpoint2
-            if self.match("-") is not None:
-                if self.match("=") is not None:
+            MINUS = self.match("-")
+            if MINUS is not None:
+                EQ = self.match("=")
+                if EQ is not None:
                     expression = self.parse_expression()
                     if expression is not None:
-                        return Node("assignment", left_side, expression)
+                        return Node("assignment", left_side, MINUS, EQ, expression)
             self.index = checkpoint2
-            if self.match("*") is not None:
-                if self.match("=") is not None:
+            STAR = self.match("*")
+            if STAR is not None:
+                EQ = self.match("=")
+                if EQ is not None:
                     expression = self.parse_expression()
                     if expression is not None:
-                        return Node("assignment", left_side, expression)
+                        return Node("assignment", left_side, STAR, EQ, expression)
             self.index = checkpoint2
-            if self.match("/") is not None:
-                if self.match("=") is not None:
+            SLASH = self.match("/")
+            if SLASH is not None:
+                EQ = self.match("=")
+                if EQ is not None:
                     expression = self.parse_expression()
                     if expression is not None:
-                        return Node("assignment", left_side, expression)
+                        return Node("assignment", left_side, SLASH, EQ, expression)
         self.index = checkpoint
     def parse_function_definition(self):
         checkpoint = self.index
-        if self.match("FUNC") is not None:
+        FUNC = self.match("FUNC")
+        if FUNC is not None:
             VAR = self.match("VAR")
             if VAR is not None:
-                if self.match("(") is not None:
+                OP_BRACKET = self.match("(")
+                if OP_BRACKET is not None:
                     params = self.parse_params()
                     if params is not None:
-                        if self.match(")") is not None:
-                            if self.match("{") is not None:
+                        CL_BRACKET = self.match(")")
+                        if CL_BRACKET is not None:
+                            OP_CURLY = self.match("{")
+                            if OP_CURLY is not None:
                                 statements = self.parse_statements()
                                 if statements is not None:
-                                    if self.match("}") is not None:
-                                        return Node("function_definition", VAR, params, statements)
+                                    CL_CURLY = self.match("}")
+                                    if CL_CURLY is not None:
+                                        return Node("function_definition", FUNC, VAR, OP_BRACKET, params, CL_BRACKET, OP_CURLY, statements, CL_CURLY)
         self.index = checkpoint
     def parse_if_statement(self):
         checkpoint = self.index
-        if self.match("IF") is not None:
+        IF = self.match("IF")
+        if IF is not None:
             expression = self.parse_expression()
             if expression is not None:
-                if self.match("{") is not None:
+                OP_CURLY = self.match("{")
+                if OP_CURLY is not None:
                     statements = self.parse_statements()
                     if statements is not None:
-                        if self.match("}") is not None:
+                        CL_CURLY = self.match("}")
+                        if CL_CURLY is not None:
                             elif_statement = self.parse_elif_statement()
                             if elif_statement is not None:
-                                return Node("if_statement", expression, statements, elif_statement)
+                                return Node("if_statement", IF, expression, OP_CURLY, statements, CL_CURLY, elif_statement)
         self.index = checkpoint
     def parse_for_loop(self):
         checkpoint = self.index
-        if self.match("FOR") is not None:
+        FOR = self.match("FOR")
+        if FOR is not None:
             VAR = self.match("VAR")
             if VAR is not None:
-                if self.match("IN") is not None:
+                IN = self.match("IN")
+                if IN is not None:
                     iterable = self.parse_iterable()
                     if iterable is not None:
                         if self.match("{") is not None:
                             statements = self.parse_statements()
                             if statements is not None:
                                 if self.match("}") is not None:
-                                    return Node("for_loop", VAR, iterable, statements)
+                                    return Node("for_loop", FOR, VAR, IN, iterable, statements)
         self.index = checkpoint
     def parse_while_loop(self):
         checkpoint = self.index
