@@ -246,6 +246,22 @@ class Parser:
         self.index = checkpoint
         return Node("params")
     def parse_elif_statement(self):
+        checkpoint = self.index
+        if self.match("ELIF") is not None:
+            expression = self.parse_expression()
+            if expression is not None:
+                if self.match("{") is not None:
+                    statements = self.parse_statements()
+                    if statements is not None:
+                        if self.match("}") is not None:
+                            elif_statement = self.parse_elif_statement()
+                            if elif_statement is not None:
+                                return Node("elif_statement", expression, statements, elif_statement)
+        self.index = checkpoint
+        else_statement = self.parse_else_statement()
+        if else_statement is not None:
+            return Node("elif_statement", else_statement)
+        self.index = checkpoint
         return Node("elif_statement")
     def parse_iterable(self):
         return Node("iterable")
@@ -255,3 +271,5 @@ class Parser:
         return Node("addition_")
     def parse_params_(self):
         return Node("params_")
+    def parse_else_statement(self):
+        return Node("else_statement")
