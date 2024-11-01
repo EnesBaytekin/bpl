@@ -20,10 +20,10 @@ statements
 
 assignment
   : left_side = expression
-  | left_side += expression
-  | left_side -= expression
-  | left_side *= expression
-  | left_side /= expression
+  | left_side + = expression
+  | left_side - = expression
+  | left_side * = expression
+  | left_side / = expression
 
 left_side
   : VAR
