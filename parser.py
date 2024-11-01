@@ -179,7 +179,13 @@ class Parser:
                             return Node("while_loop", expression, statements)
         self.index = checkpoint
     def parse_addition(self):
-        return Node("addition")
+        checkpoint = self.index
+        term = self.parse_term()
+        if term is not None:
+            addition_ = self.parse_addition_()
+            if addition_ is not None:
+                return Node("addition", term, addition_)
+        self.index = checkpoint
     def parse_expression_(self):
         return Node("expression_")
     def parse_left_side(self):
@@ -189,4 +195,8 @@ class Parser:
     def parse_elif_statement(self):
         return Node("elif_statement")
     def parse_iterable(self):
-        return Node("parse_iterable")
+        return Node("iterable")
+    def parse_term(self):
+        return Node("term")
+    def parse_addition_(self):
+        return Node("addition_")
