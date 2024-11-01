@@ -274,7 +274,13 @@ class Parser:
             return Node("iterable", list)
         self.index = checkpoint
     def parse_term(self):
-        return Node("term")
+        checkpoint = self.index
+        factor = self.parse_factor()
+        if factor is not None:
+            term_ = self.parse_term_()
+            if term_ is not None:
+                return Node("term", factor, term_)
+        self.index = checkpoint
     def parse_addition_(self):
         return Node("addition_")
     def parse_params_(self):
@@ -283,3 +289,7 @@ class Parser:
         return Node("else_statement")
     def parse_list(self):
         return Node("list")
+    def parse_factor(self):
+        return Node("factor")
+    def parse_term_(self):
+        return Node("term_")
