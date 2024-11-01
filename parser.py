@@ -257,7 +257,7 @@ class Parser:
         if VAR is not None:
             params_ = self.parse_params_()
             if params_ is not None:
-                return Node("params", params_)
+                return Node("params", VAR, params_)
         self.index = checkpoint
         return Node("params")
     def parse_elif_statement(self):
@@ -320,7 +320,7 @@ class Parser:
             if VAR is not None:
                 params_ = self.parse_params_()
                 if params_ is not None:
-                    return Node("params_")
+                    return Node("params_", VAR, params_)
         self.index = checkpoint
         return Node("params_")
     def parse_else_statement(self):
