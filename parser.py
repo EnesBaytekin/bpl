@@ -237,6 +237,13 @@ class Parser:
             return Node("left_side", VAR)
         self.index = checkpoint
     def parse_params(self):
+        checkpoint = self.index
+        VAR = self.match("VAR")
+        if VAR is not None:
+            params_ = self.parse_params_()
+            if params_ is not None:
+                return Node("params", params_)
+        self.index = checkpoint
         return Node("params")
     def parse_elif_statement(self):
         return Node("elif_statement")
@@ -246,3 +253,5 @@ class Parser:
         return Node("term")
     def parse_addition_(self):
         return Node("addition_")
+    def parse_params_(self):
+        return Node("params_")
