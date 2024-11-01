@@ -29,6 +29,9 @@ def debug(parse_tree):
     tree_object = parse_tree.get_tree()
     from debug import create_tree_image
     create_tree_image(tree_object, "debug/tree")
+    from json import dumps
+    with open("debug/tree.json", "w") as file:
+        file.write(dumps(tree_object, indent=2))
     
 if __name__ == "__main__":
     main()
