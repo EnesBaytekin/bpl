@@ -20,7 +20,7 @@ def main():
     except IOError:
         print("File could not be found.") 
         exit(0)
-    tokens = tokenize(data)
+    tokens = tokenize(data+"\n")
     parser = Parser(tokens)
     parse_tree = parser.parse()
     debug(tokens, parse_tree)
