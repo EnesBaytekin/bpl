@@ -82,10 +82,26 @@ class Parser:
         while_loop = self.parse_while_loop()
         if while_loop is not None:
             return Node("statement", while_loop)
+        self.index = checkpoint
     def parse_expression(self):
+        checkpoint = self.index
+        addition = self.parse_addition()
+        if addition is not None:
+            expression_ = self.parse_expression_()
+            if expression_ is not None:
+                return Node("addition", addition, expression_)
+        self.index = checkpoint
     def parse_assignment(self):
+        return Node("assignment")
     def parse_function_definition(self):
+        return Node("function_definition")
     def parse_if_statement(self):
+        return Node("if_statement")
     def parse_for_loop(self):
+        return Node("for_loop")
     def parse_while_loop(self):
-        
+        return Node("while_loop")
+    def parse_addition(self):
+        return Node("addition")
+    def parse_expression_(self):
+        return Node("expression_")
