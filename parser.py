@@ -404,4 +404,12 @@ class Parser:
         self.index = checkpoint
         return Node("items_")
     def parse_function_call(self):
-        return Node("function_call")
+        checkpoint = self.index
+        VAR = self.match("VAR")
+        if VAR is not None:
+            if self.match("(") is not None:
+                items = self.parse_items()
+                if items is not None:
+                    if self.match(")") is not None:
+                        return Node("function_call", VAR, items)
+        self.index = checkpoint
