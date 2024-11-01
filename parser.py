@@ -188,5 +188,5 @@ class Parser:
         return Node("params")
     def parse_elif_statement(self):
         return Node("elif_statement")
-    def parse_parse_iterable(self):
+    def parse_iterable(self):
         return Node("parse_iterable")
