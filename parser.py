@@ -6,7 +6,16 @@ class Node:
         self.type = type
         self.children = children
     def get_tree(self):
-        return {"type": self.type, "children": [child.get_tree() for child in self.children]}
+        return {
+            "type": self.type,
+            "children": [
+                child.get_tree()
+                if isinstance(child, Node)
+                else
+                {"type": child.type, "value": child.value}
+                for child in self.children
+            ]
+        }
 
 class Parser:
     def __init__(self, tokens: list[Token]):
@@ -29,12 +38,13 @@ class Parser:
         checkpoint = self.index
         statement = self.parse_statement()
         if statement is not None:
+            checkpoint2 = self.index
             if self.match("ENDL") is not None:
                 statements = self.parse_statements()
                 if statements is not None:
                     return Node("statements", statement, statements)
-            else:
-                return Node("statements", statement)
+            self.index = checkpoint2
+            return Node("statements", statement)
         self.index = checkpoint
         if self.match("ENDL") is not None:
             statements = self.parse_statements()
