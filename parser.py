@@ -154,7 +154,19 @@ class Parser:
                                 return Node("if_statement", expression, statements, elif_statement)
         self.index = checkpoint
     def parse_for_loop(self):
-        return Node("for_loop")
+        checkpoint = self.index
+        if self.match("FOR") is not None:
+            VAR = self.match("VAR")
+            if VAR is not None:
+                if self.match("IN") is not None:
+                    iterable = self.parse_iterable()
+                    if iterable is not None:
+                        if self.match("{") is not None:
+                            statements = self.parse_statements()
+                            if statements is not None:
+                                if self.match("}") is not None:
+                                    return Node("for_loop", VAR, iterable, statements)
+        self.index = checkpoint
     def parse_while_loop(self):
         return Node("while_loop")
     def parse_addition(self):
@@ -167,3 +179,5 @@ class Parser:
         return Node("params")
     def parse_elif_statement(self):
         return Node("elif_statement")
+    def parse_parse_iterable(self):
+        return Node("parse_iterable")
