@@ -299,6 +299,14 @@ class Parser:
         self.index = checkpoint
         return Node("addition_")
     def parse_params_(self):
+        checkpoint = self.index
+        if self.match(",") is not None:
+            VAR = self.match("VAR")
+            if VAR is not None:
+                params_ = self.parse_params_()
+                if params_ is not None:
+                    return Node("params_")
+        self.index = checkpoint
         return Node("params_")
     def parse_else_statement(self):
         return Node("else_statement")
