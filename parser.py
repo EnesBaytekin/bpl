@@ -92,7 +92,39 @@ class Parser:
                 return Node("addition", addition, expression_)
         self.index = checkpoint
     def parse_assignment(self):
-        return Node("assignment")
+        checkpoint = self.index
+        left_side = self.parse_left_side()
+        if left_side is not None:
+            checkpoint2 = self.index
+            if self.match("=") is not None:
+                expression = self.parse_expression()
+                if expression is not None:
+                    return Node("assignment", left_side, expression)
+            self.index = checkpoint2
+            if self.match("+") is not None:
+                if self.match("=") is not None:
+                    expression = self.parse_expression()
+                    if expression is not None:
+                        return Node("assignment", left_side, expression)
+            self.index = checkpoint2
+            if self.match("-") is not None:
+                if self.match("=") is not None:
+                    expression = self.parse_expression()
+                    if expression is not None:
+                        return Node("assignment", left_side, expression)
+            self.index = checkpoint2
+            if self.match("*") is not None:
+                if self.match("=") is not None:
+                    expression = self.parse_expression()
+                    if expression is not None:
+                        return Node("assignment", left_side, expression)
+            self.index = checkpoint2
+            if self.match("/") is not None:
+                if self.match("=") is not None:
+                    expression = self.parse_expression()
+                    if expression is not None:
+                        return Node("assignment", left_side, expression)
+        self.index = checkpoint
     def parse_function_definition(self):
         return Node("function_definition")
     def parse_if_statement(self):
@@ -105,3 +137,5 @@ class Parser:
         return Node("addition")
     def parse_expression_(self):
         return Node("expression_")
+    def parse_left_side(self):
+        return Node("left_side")
