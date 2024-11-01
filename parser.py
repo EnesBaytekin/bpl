@@ -187,6 +187,41 @@ class Parser:
                 return Node("addition", term, addition_)
         self.index = checkpoint
     def parse_expression_(self):
+        checkpoint = self.index
+        if self.match("=") is not None:
+            if self.match("=") is not None:
+                addition = self.parse_addition()
+                if addition is not None:
+                    return Node("expression_", addition)
+        self.index = checkpoint
+        if self.match("!") is not None:
+            if self.match("=") is not None:
+                addition = self.parse_addition()
+                if addition is not None:
+                    return Node("expression_", addition)
+        self.index = checkpoint
+        if self.match("<") is not None:
+            checkpoint2 = self.index
+            if self.match("=") is not None:
+                addition = self.parse_addition()
+                if addition is not None:
+                    return Node("expression_", addition)
+            self.index = checkpoint2
+            addition = self.parse_addition()
+            if addition is not None:
+                return Node("expression_", addition)
+        self.index = checkpoint
+        if self.match(">") is not None:
+            checkpoint2 = self.index
+            if self.match("=") is not None:
+                addition = self.parse_addition()
+                if addition is not None:
+                    return Node("expression_", addition)
+            self.index = checkpoint2
+            addition = self.parse_addition()
+            if addition is not None:
+                return Node("expression_", addition)
+        self.index = checkpoint
         return Node("expression_")
     def parse_left_side(self):
         return Node("left_side")
