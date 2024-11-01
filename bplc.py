@@ -23,9 +23,14 @@ def main():
     tokens = tokenize(data)
     parser = Parser(tokens)
     parse_tree = parser.parse()
-    debug(parse_tree)
+    debug(tokens, parse_tree)
 
-def debug(parse_tree):
+def debug(tokens, parse_tree):
+    with open("debug/tokens", "w") as file:
+        for token in tokens:
+            print(token, file=file, end=" ")
+            if token.type == "ENDL":
+                print(file=file)
     tree_object = parse_tree.get_tree()
     from debug import create_tree_image
     create_tree_image(tree_object, "debug/tree")
