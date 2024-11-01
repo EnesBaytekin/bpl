@@ -282,6 +282,21 @@ class Parser:
                 return Node("term", factor, term_)
         self.index = checkpoint
     def parse_addition_(self):
+        checkpoint = self.index
+        if self.match("+") is not None:
+            term = self.parse_term()
+            if term is not None:
+                addition_ = self.parse_addition_()
+                if addition_ is not None:
+                    return Node("addition_", term, addition_)
+        self.index = checkpoint
+        if self.match("-") is not None:
+            term = self.parse_term()
+            if term is not None:
+                addition_ = self.parse_addition_()
+                if addition_ is not None:
+                    return Node("addition_", term, addition_)
+        self.index = checkpoint
         return Node("addition_")
     def parse_params_(self):
         return Node("params_")
