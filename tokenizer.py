@@ -37,7 +37,7 @@ def tokenize(source: str):
         elif state == "string":
             if c == value[0]:
                 state = "idle"
-                tokens.append(Token("STRING", value[1:]))
+                tokens.append(Token("STR", value[1:]))
             else:
                 value += c
         elif state == "number":
