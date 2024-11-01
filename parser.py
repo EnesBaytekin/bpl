@@ -326,8 +326,20 @@ class Parser:
                     return Node("list", items)
         self.index = checkpoint
     def parse_factor(self):
-        return Node("factor")
+        checkpoint = self.index
+        if self.match("(") is not None:
+            expression = self.parse_expression()
+            if expression is not None:
+                if self.match(")") is not None:
+                    return Node("factor", expression)
+        self.index = checkpoint
+        value = self.parse_value()
+        if value is not None:
+            return Node("factor", value)
+        self.index = checkpoint
     def parse_term_(self):
         return Node("term_")
     def parse_items(self):
         return Node("items")
+    def parse_value(self):
+        return Node("value")
