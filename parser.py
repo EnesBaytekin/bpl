@@ -264,7 +264,15 @@ class Parser:
         self.index = checkpoint
         return Node("elif_statement")
     def parse_iterable(self):
-        return Node("iterable")
+        checkpoint = self.index
+        STR = self.match("STR")
+        if STR is not None:
+            return Node("iterable", STR)
+        self.index = checkpoint
+        list = self.parse_list()
+        if list is not None:
+            return Node("iterable", list)
+        self.index = checkpoint
     def parse_term(self):
         return Node("term")
     def parse_addition_(self):
@@ -273,3 +281,5 @@ class Parser:
         return Node("params_")
     def parse_else_statement(self):
         return Node("else_statement")
+    def parse_list(self):
+        return Node("list")
