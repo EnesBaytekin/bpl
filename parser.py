@@ -318,8 +318,16 @@ class Parser:
                         return Node("else_statement", statements)
         self.index = checkpoint
     def parse_list(self):
-        return Node("list")
+        checkpoint = self.index
+        if self.match("[") is not None:
+            items = self.parse_items()
+            if items is not None:
+                if self.match("]") is not None:
+                    return Node("list", items)
+        self.index = checkpoint
     def parse_factor(self):
         return Node("factor")
     def parse_term_(self):
         return Node("term_")
+    def parse_items(self):
+        return Node("items")
