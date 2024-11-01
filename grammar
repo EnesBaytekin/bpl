@@ -4,8 +4,8 @@ program
 
 statement
   : { statements }
-  | expression
   | assignment
+  | expression
   | DEL VAR [ expression ]
   | function_definition
   | if_statement
@@ -67,6 +67,7 @@ value
   | FLOAT
   | list
   | function_call
+  | VAR
   | VAR [ expression ]
 
 list

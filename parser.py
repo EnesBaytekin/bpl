@@ -60,13 +60,13 @@ class Parser:
                 if self.match("}") is not None:
                     return Node("statement", statements)
         self.index = checkpoint
-        expression = self.parse_expression()
-        if expression is not None:
-            return Node("statement", expression)
-        self.index = checkpoint
         assignment = self.parse_assignment()
         if assignment is not None:
             return Node("statement", assignment)
+        self.index = checkpoint
+        expression = self.parse_expression()
+        if expression is not None:
+            return Node("statement", expression)
         self.index = checkpoint
         if self.match("DEL") is not None:
             VAR = self.match("VAR")
@@ -397,11 +397,14 @@ class Parser:
         self.index = checkpoint
         VAR = self.match("VAR")
         if VAR is not None:
+            checkpoint2 = self.index
             if self.match("[") is not None:
                 expression = self.parse_expression()
                 if expression is not None:
                     if self.match("]") is not None:
                         return Node("value", VAR, expression)
+            self.index = checkpoint2
+            return Node("value", VAR)
         self.index = checkpoint
     def parse_items_(self):
         checkpoint = self.index
