@@ -355,6 +355,15 @@ class Parser:
         self.index = checkpoint
         return Node("term_")
     def parse_items(self):
+        checkpoint = self.index
+        expression = self.parse_expression()
+        if expression is not None:
+            items_ = self.parse_items_()
+            if items_ is not None:
+                return Node("items", expression, items_)
+        self.index = checkpoint
         return Node("items")
     def parse_value(self):
         return Node("value")
+    def parse_items_(self):
+        return Node("items_")
