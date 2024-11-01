@@ -23,9 +23,12 @@ def main():
     tokens = tokenize(data)
     parser = Parser(tokens)
     parse_tree = parser.parse()
-    tree_string = parse_tree.get_tree()
-    from json import loads, dumps
-    print(dumps(tree_string, indent=2))
+    debug(parse_tree)
+
+def debug(parse_tree):
+    tree_object = parse_tree.get_tree()
+    from debug import create_tree_image
+    create_tree_image(tree_object, "debug/tree")
     
 if __name__ == "__main__":
     main()
