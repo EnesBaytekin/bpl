@@ -168,7 +168,16 @@ class Parser:
                                     return Node("for_loop", VAR, iterable, statements)
         self.index = checkpoint
     def parse_while_loop(self):
-        return Node("while_loop")
+        checkpoint = self.index
+        if self.match("WHILE") is not None:
+            expression = self.parse_expression()
+            if expression is not None:
+                if self.match("{") is not None:
+                    statements = self.parse_statements()
+                    if statements is not None:
+                        if self.match("}") is not None:
+                            return Node("while_loop", expression, statements)
+        self.index = checkpoint
     def parse_addition(self):
         return Node("addition")
     def parse_expression_(self):
