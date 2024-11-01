@@ -364,6 +364,36 @@ class Parser:
         self.index = checkpoint
         return Node("items")
     def parse_value(self):
-        return Node("value")
+        checkpoint = self.index
+        STR = self.match("STR")
+        if STR is not None:
+            return Node("value", STR)
+        self.index = checkpoint
+        INT = self.match("INT")
+        if INT is not None:
+            return Node("value", INT)
+        self.index = checkpoint
+        FLOAT = self.match("FLOAT")
+        if FLOAT is not None:
+            return Node("value", FLOAT)
+        self.index = checkpoint
+        list = self.parse_list()
+        if list is not None:
+            return Node("value", list)
+        self.index = checkpoint
+        function_call = self.parse_function_call()
+        if function_call is not None:
+            return Node("value", function_call)
+        self.index = checkpoint
+        VAR = self.match("VAR")
+        if VAR is not None:
+            if self.match("[") is not None:
+                expression = self.parse_expression()
+                if expression is not None:
+                    if self.match("]") is not None:
+                        return Node("value", VAR, expression)
+        self.index = checkpoint
     def parse_items_(self):
         return Node("items_")
+    def parse_function_call(self):
+        return Node("function_call")
