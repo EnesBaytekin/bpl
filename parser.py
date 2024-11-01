@@ -81,6 +81,11 @@ class Parser:
         if function_definition is not None:
             return Node("statement", function_definition)
         self.index = checkpoint
+        if self.match("RETURN") is not None:
+            expression = self.parse_expression()
+            if expression is not None:
+                return Node("statement", expression)        
+        self.index = checkpoint
         if_statement = self.parse_if_statement()
         if if_statement is not None:
             return Node("statement", if_statement)

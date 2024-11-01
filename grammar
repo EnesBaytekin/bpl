@@ -8,6 +8,7 @@ statement
   | expression
   | DEL VAR [ expression ]
   | function_definition
+  | RETURN expression
   | if_statement
   | for_loop
   | while_loop
