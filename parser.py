@@ -309,7 +309,14 @@ class Parser:
         self.index = checkpoint
         return Node("params_")
     def parse_else_statement(self):
-        return Node("else_statement")
+        checkpoint = self.index
+        if self.match("ELSE") is not None:
+            if self.match("{") is not None:
+                statements = self.parse_statements()
+                if statements is not None:
+                    if self.match("}") is not None:
+                        return Node("else_statement", statements)
+        self.index = checkpoint
     def parse_list(self):
         return Node("list")
     def parse_factor(self):
