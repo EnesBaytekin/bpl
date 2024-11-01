@@ -5,7 +5,7 @@ def create_tree_image(data, file):
     def traverse(node, parent_id=None):
         node_id = str(id(node))
         label = node["type"]
-        if "value" in node:
+        if "value" in node and node["value"] != "":
             label += ": "+str(node["value"])
         graph.node(node_id, label=label)
         if parent_id:
