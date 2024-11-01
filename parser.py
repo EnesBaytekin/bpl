@@ -224,7 +224,18 @@ class Parser:
         self.index = checkpoint
         return Node("expression_")
     def parse_left_side(self):
-        return Node("left_side")
+        checkpoint = self.index
+        VAR = self.match("VAR")
+        if VAR is not None:
+            checkpoint2 = self.index
+            if self.match("[") is not None:
+                expression = self.parse_expression()
+                if expression is not None:
+                    if self.match("]") is not None:
+                        return Node("left_side", VAR, expression)
+            self.index = checkpoint2
+            return Node("left_side", VAR)
+        self.index = checkpoint
     def parse_params(self):
         return Node("params")
     def parse_elif_statement(self):
